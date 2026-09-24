@@ -1,4 +1,4 @@
-*! version 0.1.0  24sep2026  Joris Pinkse
+*! version 0.1.1  24sep2026  Joris Pinkse
 *! quadriceps: positive-weight cubature rules for the Gaussian weight (ghpos) and the cube (lepos)
 *! the Stata twin of Quadriceps.jl (Julia), quadriceps-py (Python) and quadriceps-r (R)
 *! https://github.com/NittanyLion/quadriceps-stata
@@ -238,8 +238,8 @@ program _quadriceps_version, rclass
     version 16
     tempname C
     mata: quadriceps_version_st("`C'")
-    di as txt "quadriceps 0.1.0 (24sep2026): " as res `C' as txt " stored rules, data format QUADRICEPS1"
-    return local version 0.1.0
+    di as txt "quadriceps 0.1.1 (24sep2026): " as res `C' as txt " stored rules, data format QUADRICEPS1"
+    return local version 0.1.1
     return scalar cells = `C'
 end
 
@@ -758,10 +758,9 @@ real matrix quadriceps_den(real matrix SA)
 // checked in the normalized frame.
 real scalar quadriceps_exactness(real matrix X, real colvector w, real scalar p, string scalar family)
 {
-    real scalar fam, n, d, k
+    real scalar fam, n, d, k, a, c0
     real colvector m, s, sa
     real matrix P, A
-    real rowvector e
 
     fam = quadriceps_family(family)
     n = rows(X)
@@ -775,11 +774,11 @@ real scalar quadriceps_exactness(real matrix X, real colvector w, real scalar p,
         exit(198)
     }
     m = quadriceps_moments1d(fam, p)
-    e = 0..p
     P = J(n, d * (p + 1), .)                // P[i, (k-1)(p+1) + e + 1] = x_ik^e
-    for (k = 1; k <= d; k++) {
-        P[., ((k - 1) * (p + 1) + 1)..(k * (p + 1))] = X[., k] :^ e
-        P[., (k - 1) * (p + 1) + 1] = J(n, 1, 1)
+    for (k = 1; k <= d; k++) {              // (a column and a row vector are not c-conformable, hence the loop)
+        c0 = (k - 1) * (p + 1) + 1
+        P[., c0] = J(n, 1, 1)
+        for (a = 1; a <= p; a++) P[., c0 + a] = X[., k] :^ a
     }
     A = abs(P)
     if (d == 1) {
@@ -808,7 +807,7 @@ real scalar quadriceps_descend(real matrix P, real matrix A, real colvector m, r
         S = B' * P[., cd]
         SA = abs(B)' * A[., cd]
         E = abs(S - mom * (mi * mi')) :/ quadriceps_den(SA)
-        L = (0::r) :+ (0..r)                // exponent sums of the last two coordinates
+        L = (0::r) * J(1, r + 1, 1) + J(r + 1, 1, 1) * (0..r)     // exponent sums of the last two coordinates
         return(max(E :* (L :<= r)))
     }
     best = 0
