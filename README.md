@@ -38,7 +38,8 @@ net install quadriceps, from(https://raw.githubusercontent.com/NittanyLion/quadr
 ```
 
 The package needs nothing beyond Stata and Mata. It installs three commands (`quadriceps`,
-`ghpos`, `lepos`), their help files, and its two data files; `help quadriceps` has the details.
+`ghpos`, `lepos`), their help files, the Mata source `quadriceps.mata` (compiled on first use),
+and its two data files; `help quadriceps` has the details.
 
 ## Use
 

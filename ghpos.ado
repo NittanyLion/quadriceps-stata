@@ -1,4 +1,4 @@
-*! version 0.1.1  24sep2026  Joris Pinkse
+*! version 0.1.2  24sep2026  Joris Pinkse
 *! ghpos d [q] [, options]: positive-weight cubature rule for the Gaussian weight; same as quadriceps gh
 program ghpos, rclass
     version 16

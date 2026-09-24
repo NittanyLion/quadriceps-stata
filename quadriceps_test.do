@@ -39,8 +39,15 @@ program qt_rc
     gettoken what 0 : 0
     capture `0'
     local got = _rc
-    if "`rc'" == "any" qt_expect `=`got' != 0' "`what' (rc `got')"
-    else qt_expect `=`got' == `rc'' "`what' (rc `got', wanted `rc')"
+    if "`rc'" == "any" {
+        local ok = (`got' != 0)
+        local want any nonzero
+    }
+    else {
+        local ok = (`got' == `rc')
+        local want `rc'
+    }
+    qt_expect `ok' "`what' (rc `got', wanted `want')"
 end
 
 * qt_frame name n d "what": the frame holds an n x d rule in x1..xd, w with positive weights

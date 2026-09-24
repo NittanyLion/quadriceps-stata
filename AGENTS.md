@@ -37,16 +37,25 @@ manuals without ever being run, and is tested by colleagues who have Stata: they
   `https://www.stata.com/manuals/<chapter>.pdf` (e.g. `m-5bufio.pdf`, `rnet.pdf`).
 * When a tester reports a failure, fix the cause, not the check, and ask for a rerun.
 
+Lessons from the testers' logs so far (Stata 19.5 SE, Mac, 2026-09-24):
+
+* A column vector and a row vector are not c-conformable (`(0::r) :+ (0..r)` is an error); a
+  column against a matrix with the same number of rows is fine. See [M-2] op_colon.
+* Mata functions defined in an ado-file's `mata:` block are private to that ado-file.
+* In a one-line `else command`, a `` `=exp' `` macro on the else line is expanded even when the
+  branch is not taken.
+
 ## Layout
 
 | path | what it holds |
 |---|---|
-| `quadriceps.ado` | everything: the Stata command `quadriceps` and its subprograms, then the Mata code (data reader, catalog, planner, Golub–Welsch, tensor product, exactness measure, the glue to frames and matrices) |
+| `quadriceps.ado` | the Stata command `quadriceps` and its subprograms, and `_quadriceps_load`, which compiles `quadriceps.mata` on first use (and again when `quadriceps_mata_version()` disagrees with the ado's version) |
+| `quadriceps.mata` | the Mata code: data reader, catalog, planner, Golub–Welsch, tensor product, exactness measure, the glue to frames and matrices. It is a separate file loaded with `run` because Mata functions defined inside an ado-file are private to it ([M-1] Ado); this way `ghpos()` and friends are usable from Mata directly |
 | `ghpos.ado`, `lepos.ado` | one-line aliases for `quadriceps gh` and `quadriceps le` |
 | `quadriceps.sthlp` | the help file (SMCL); `ghpos.sthlp` and `lepos.sthlp` include it |
 | `quadriceps_rules.bin`, `quadriceps_index.tsv` | the data (format `QUADRICEPS1`, see `FORMAT.md`) — generated; byte-identical to `data/rules.bin` and `data/index.tsv` of Quadriceps.jl, renamed because `net install` puts every file into a flat letter directory of the ado-path |
 | `quadriceps_test.do` | the tests: every stored rule, both conventions, the fallback, the error paths; ancillary file, fetched with `net get` |
-| `stata.toc`, `quadriceps.pkg` | the `net install` manifest; bump `Distribution-Date` in `quadriceps.pkg` and the `*! version` lines on every release |
+| `stata.toc`, `quadriceps.pkg` | the `net install` manifest; on every release bump `Distribution-Date` in `quadriceps.pkg`, the `*! version` lines, and the version string in both `_quadriceps_load` and `quadriceps_mata_version()` (they must agree, or the loader recompiles on every call) |
 | `RULES.md`, `FORMAT.md`, `NOTICE.md` | generated copies from Quadriceps.jl |
 
 ## Conventions that must hold
