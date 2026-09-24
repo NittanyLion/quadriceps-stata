@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 0.1.0  24sep2026}{...}
+{* *! version 0.1.2  24sep2026}{...}
 {vieweralsosee "[R] net" "help net"}{...}
 {vieweralsosee "[M-5] bufio()" "help mata bufio()"}{...}
 {viewerjumpto "Syntax" "quadriceps##syntax"}{...}
