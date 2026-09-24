@@ -1,0 +1,26 @@
+v 3
+d quadriceps. Positive-weight cubature rules for the Gaussian weight and the cube
+d
+d {bf:ghpos} and {bf:lepos} return the smallest positive-weight cubature rules known to
+d the author for the standard normal density on R^d and the uniform density on
+d [0,1]^d, dimensions 2 to 5, with a fallback to the cheapest tensor product of
+d lower-dimensional rules elsewhere. The rules are described in Pinkse (2026),
+d Positive weight Hermite and Legendre quadrature rules, arXiv:2609.26840,
+d doi:10.5281/zenodo.22904159. Stata twin of the Julia package Quadriceps.jl.
+d
+d Requires Stata 16 or later.
+d
+d Author: Joris Pinkse, Penn State
+d Support: https://github.com/NittanyLion/quadriceps-stata/issues
+d
+d Distribution-Date: 20260924
+d
+f quadriceps.ado
+f ghpos.ado
+f lepos.ado
+f quadriceps.sthlp
+f ghpos.sthlp
+f lepos.sthlp
+F quadriceps_rules.bin
+F quadriceps_index.tsv
+f quadriceps_test.do

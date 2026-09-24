@@ -1,0 +1,5 @@
+v 3
+d quadriceps: positive-weight cubature rules for the Gaussian weight and the cube
+d Joris Pinkse, Penn State
+d https://github.com/NittanyLion/quadriceps-stata
+p quadriceps positive-weight cubature rules for the Gaussian weight (ghpos) and the cube (lepos)
