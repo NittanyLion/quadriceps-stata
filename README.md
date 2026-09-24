@@ -155,14 +155,15 @@ the license notice that travels with the derived files.
 ## Tests
 
 ```stata
-net get quadriceps, from(https://raw.githubusercontent.com/NittanyLion/quadriceps-stata/main)
+net get quadriceps, from(https://raw.githubusercontent.com/NittanyLion/quadriceps-stata/main) replace
 do quadriceps_test.do
 ```
 
 or, from a checkout, `adopath + "path/to/quadriceps-stata"` and then `do quadriceps_test.do` in
 that directory. The script checks every stored rule (size, positive weights, exactness up to its
 degree), both conventions, the fallback and the error paths, writes `quadriceps_test.log`, and
-ends with a line `N checks, M failed`. It takes a minute or two.
+ends with a line `N checks, M failed`. It takes a minute or two. (`replace` matters: without it,
+`net get` leaves an older copy of the test file in place, silently, with `r(602)`.)
 
 The author does not have Stata. The package was written against the Stata and Mata manuals and
 is tested by colleagues who do; if something fails for you, please open an issue with the log.

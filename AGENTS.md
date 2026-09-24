@@ -44,6 +44,13 @@ Lessons from the testers' logs so far (Stata 19.5 SE, Mac, 2026-09-24):
 * Mata functions defined in an ado-file's `mata:` block are private to that ado-file.
 * In a one-line `else command`, a `` `=exp' `` macro on the else line is expanded even when the
   branch is not taken.
+* `net get` without `replace` refuses to overwrite an older `quadriceps_test.do` (`r(602)`) and the
+  tester then runs the stale tests; the README's `net get` line now carries `replace`.
+
+Status: version 0.1.2 (commit 2740bb2, Mata code in `quadriceps.mata`) passed the full test script
+on Stata 19.5 SE, Mac, 2026-09-24: 1221 checks, 0 failed. That run used the previous test file,
+in which the two `qt_rc any` checks misfire (`any not found`) and are not counted; the current
+test file has not yet been run.
 
 ## Layout
 
